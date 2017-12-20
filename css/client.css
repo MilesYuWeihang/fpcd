@@ -1,0 +1,32 @@
+
+.card{
+	height: 86px;
+	width:50%;
+	margin: 10%;
+}
+.atkdef{
+	height: 10px;
+	width: 100%;
+	font-size: 60%;
+	color:red;
+
+}
+
+.hand{
+	padding-top: 40px;
+	padding-bottom: 40px;
+	margin: 40px;
+}
+.maincard{
+	height: 130px;
+	width: 70%;
+}
+.cardimg{
+	height: 100%;
+	width:100%;
+}
+
+.battlefield{
+	margin-top: 60px;
+	margin-bottom: 80px;
+}

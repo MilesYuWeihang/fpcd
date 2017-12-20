@@ -4,6 +4,7 @@
     <title>WebSocket Echo Demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link href="../bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../css/client.css" type="text/css" rel="stylesheet" />
     <script src="../js/jquery-1.12.3.min.js"></script>
     <script src="../js/jquery-1.12.3.min.js"></script>
     <script src="../bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -70,21 +71,156 @@
 <body >
     <div class="vertical-center">
         <div class="container">
-            <ul id="messages" class="list-unstyled"></ul>
+            <!-- <ul id="messages" class="list-unstyled"></ul>
             <hr/>
             <form role="form" id="chat_form" onsubmit="sendMessage(); return false;">
                 <div class="form-group">
                     <input class="form-control" type="text" id="message" name="message"
-                           placeholder="Type text to echo in here" value="" autofocus/>
+                    placeholder="Type text to echo in here" value="" autofocus/>
                 </div>
                 <button type="button" id="send" class="btn btn-primary"
-                        onclick="sendMessage();">
-                    Send Message
-                </button>
+                onclick="sendMessage();">
+                Send Message
+            </button>
 
-            </form>
-            <div class="form-group"><span>nikename：</span><input id="name" type="text" /> <button class="btn btn-sm btn-info" onclick="changName();">change</button></div>
-        </div>
+        </form>
+        
+        <div class="form-group"><span>nikename：</span><input id="name" type="text" /> <button class="btn btn-sm btn-info" onclick="changName();">change</button></div> -->
+        <table class="hand">
+            <tr>
+                <th>
+                    <div class="card" >
+                        <img class="cardimg" src="../img/card.jpg">
+                        <div class="atkdef">ATK:100  DEF:50</div>
+
+                    </div>
+                </th>
+                <th>
+                    <div class="card">
+                        <img class="cardimg" src="../img/card.jpg">
+
+                    </div>
+                </th>
+                <th>
+                    <div class="card" >
+                        <img class="cardimg" src="../img/card.jpg">
+
+                    </div>
+                </th>
+                <th>
+                    <div class="maincard" >
+                        <img class="cardimg" src="../img/card.jpg">
+
+                    </div>
+                </th>
+                <th>
+                    <div class="card" >
+                        <img class="cardimg" src="../img/card.jpg">
+
+                    </div>
+                </th>
+                <th>
+                    <div class="card">
+                        <img class="cardimg" src="../img/card.jpg">
+
+                    </div>
+                </th>
+                <th>
+                    <div class="card" >
+                        <img class="cardimg" src="../img/card.jpg">
+
+                    </div>
+                </th>
+            </tr>
+        </table>
+
+        <table class="battlefield">
+            <tr>
+                <th style="width: 64px;"></th>
+                <th>
+                    <div class= battle-left>
+                        <div class="card" >
+                            <img class="cardimg" src="../img/card.jpg">
+                        </div>
+                        <div class="card" >
+                            <img class="cardimg" src="../img/card.jpg">
+                        </div>
+                    </div>
+                </th>
+                <th>
+                    <div class="screem" style="height:300px; width:70%;">
+                        <img class="cardimg" src="../img/card.jpg">
+
+                    </div>
+                </th>
+                <th>
+                    <div class="battle-right">
+                        <div class="card" >
+                            <img class="cardimg" src="../img/card.jpg">
+                        </div>
+                        <div class="card" >
+                            <img class="cardimg" src="../img/card.jpg">
+                        </div>
+                    </div>
+                </th>
+                
+
+            </tr>
+
+        </table>
+        
+
+
+        <table class="hand">
+            <tr class="row">
+                <th>
+                    <div class="card" >
+                        <img class="cardimg" src="../img/card.jpg">
+
+                    </div>
+                </th>
+                <th>
+                    <div class="card">
+                        <img class="cardimg" src="../img/card.jpg">
+
+                    </div>
+                </th>
+                <th>
+                    <div class="card" >
+                        <img class="cardimg" src="../img/card.jpg">
+
+                    </div>
+                </th>
+                <th>
+                    <div class="maincard" >
+                        <img class="cardimg" src="../img/card.jpg">
+
+                    </div>
+                </th>
+                <th>
+                    <div class="card" >
+                        <img class="cardimg" src="../img/card.jpg">
+
+                    </div>
+                </th>
+                <th>
+                    <div class="card">
+                        <img class="cardimg" src="../img/card.jpg">
+
+                    </div>
+                </th>
+                <th>
+                    <div class="card" >
+                        <img class="cardimg" src="../img/card.jpg">
+
+                    </div>
+                </th>
+            </tr>
+        </table>
+
+
     </div>
+</div>
+
 </body>
 </html>
