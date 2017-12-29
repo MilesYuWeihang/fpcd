@@ -1,14 +1,24 @@
 
 .card{
 	height: 86px;
-	width:50%;
+	width: 50%;
 	margin: 10%;
 }
-.atkdef{
+.atk{
 	height: 10px;
 	width: 100%;
-	font-size: 60%;
+	font-size: 100%;
+	text-align: center;
 	color:red;
+
+}
+
+.def{
+	height: 10px;
+	width: 100%;
+	font-size: 100%;
+	text-align: center;
+	color:green;
 
 }
 
@@ -16,6 +26,7 @@
 	padding-top: 40px;
 	padding-bottom: 40px;
 	margin: 40px;
+
 }
 .maincard{
 	height: 130px;
@@ -24,9 +35,39 @@
 .cardimg{
 	height: 100%;
 	width:100%;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .battlefield{
-	margin-top: 60px;
-	margin-bottom: 80px;
+
+	width: 80%;
+
+}
+
+.showncard{
+	height: 120px;
+	width: 97px;
+	margin: 20%;
+
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.screem{
+	width:100%;
+	margin-right:10%;
+}
+
+
+
+.battle-left{
+	height: 100%;
+	margin-left: auto;
+	margin-right: auto;
+}
+.battle-right{
+	height: 100%;
+	margin-left: auto;
+	margin-right: auto;
 }
