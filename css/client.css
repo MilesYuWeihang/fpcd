@@ -5,9 +5,25 @@
 	margin: 10%;
 }
 
-.carding{
+.turn{
+	height: 30px;
+	width: 100%;
+	margin: : auto;
+	font-size: 150%;
+	text-align: center;
+	color:black;
+	background-image: url(../img/back2.jpg);
 
 }
+
+.san{
+	height: 15px;
+	width: 100%;
+	font-size: 120%;
+	text-align: center;
+	color:purple;
+}
+
 .atk{
 	height: 10px;
 	width: 100%;

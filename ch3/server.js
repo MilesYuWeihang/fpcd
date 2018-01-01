@@ -40,10 +40,19 @@ function packetSend(id,type,info,target,attribute,value){
         "attribute": attribute,
         "value":value
     })
-    if(clients[id] != undefined && clients[id] != 1){
+    if(clients[id] != undefined && clients[id] != -1){
         var clientSocket = clients[id].ws;
         if (clientSocket.readyState === WebSocket.OPEN) {
             clientSocket.send(packet);
+        }
+    }
+}
+
+function packSend(id, data){
+    if(clients[id] != undefined && clients[id] != -1){
+        var clientSocket = clients[id].ws;
+        if (clientSocket.readyState === WebSocket.OPEN) {
+            clientSocket.send(data);
         }
     }
 }
@@ -102,7 +111,7 @@ var clientIndex = 0;
 wss.on('connection', function(ws) {
     var client_id = clientIndex;
     for(var i = 0; i < clientIndex; i++){
-        if (clients[i] === 1){
+        if (clients[i] === -1){
             client_id = i;
         }
     }
@@ -115,6 +124,24 @@ wss.on('connection', function(ws) {
     packetSend(client_id,"msg",connect_message,null,null,null);
     packetSend(client_id,"assignID",client_id,null,null,null);
     console.log('client [%s] sent', client_id);
+    var op = findOpId(client_id);
+    console.log(clients[op] != -1 && clients[op] != undefined);
+    if(clients[op] != -1 && clients[op] != undefined){
+        console.log("sending draw info");
+        packetSend(client_id,"draw",null,0,null, 5);
+        packetSend(op,"draw",null,0,null, 5);
+        var rand = Math.random();
+        console.log(rand);
+        if(rand < 0.5){
+            packetSend(client_id, "start",null,null,null,null);
+        }
+        else{
+            packetSend(op, "start",null,null,null,null);
+        }
+    }
+
+
+
     // ws.on('message', function(message) {
     //     if (message.indexOf('/nick') === 0) {
     //         var nickname_array = message.split(' ');
@@ -131,7 +158,15 @@ wss.on('connection', function(ws) {
 
     ws.onmessage = function (e) {
         var data = JSON.parse(e.data);
-        console.log("id:%s, type:%s,  info:%s",data.id, data.type, data.info);
+        //console.log("clid:%s, id:%s, type:%s,  info:%s",client_id,data.id, data.type, data.info);
+        if(data.type === "msg"){
+            console.log("clid:%s, id:%s, type:%s,  info:%s",client_id,data.id, data.type, data.info);
+        }
+        else{
+            var op = findOpId(client_id);
+            packSend(op, e.data);
+            console.log("pack from " + client_id + " transfer to "+op);
+        }
     }
 
     var closeSocket = function(customMessage) {
@@ -143,7 +178,7 @@ wss.on('connection', function(ws) {
         }
         console.log(disconnect_message);
         //clients.splice(client_id, 1);
-        clients[client_id] = 1;
+        clients[client_id] = -1;
         clientIndex -= 1;
         //TODO  friends or random
         
