@@ -158,7 +158,7 @@ wss.on('connection', function(ws) {
 
     ws.onmessage = function (e) {
         var data = JSON.parse(e.data);
-        //console.log("clid:%s, id:%s, type:%s,  info:%s",client_id,data.id, data.type, data.info);
+        console.log("clid:%s, id:%s, type:%s,  info:%s",client_id,data.id, data.type, data.info);
         if(data.type === "msg"){
             console.log("clid:%s, id:%s, type:%s,  info:%s",client_id,data.id, data.type, data.info);
         }

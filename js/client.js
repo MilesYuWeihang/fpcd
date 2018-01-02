@@ -1,11 +1,14 @@
 //client.js
 
+var char = "card1001";
+
 var cards = [3001,3002];
 var deck = [3001,3002];
 for(var i = 0; i <10; i++){
 	deck.push(3001);
 	deck.push(3002);
 }
+var originDeck = deck;
 var cardTypes = cards.length;
 
 // ob : 0 is me, 1 is opponent
@@ -35,6 +38,9 @@ turnInfo.ondblclick= function(){
 }
 
 var curDOM;
+var greenWin = $(".hid")[0];
+var redCross = $(".hid")[1];
+var targetShow = false;
 
 // load all positions in board
 var board = [];
@@ -49,6 +55,60 @@ board.push({"pos":opSanDom.position,"card":opSanDom});
 
 
 enable(1);
+
+// 1 i win;
+// 2 op win;
+// 3 tie;
+// 0 continue;
+function gameover(){
+	if(opponent.san <= 0 && myself.san >0){
+		return 1;
+	}
+	if(opponent.san <= 0 && myself.san <= 0){
+		return 3;
+	}
+	if(opponent.san >= 0 && myself.san <= 0){
+		return 2;
+	}
+	else{
+		return 4;
+	}
+}
+
+function checkWin(){
+	var ret = gameover();
+	
+	if(ret == 4){
+		return;
+	}
+	else{
+		endGame(ret);
+		if(ret === 1){
+			ret = 2;
+		}
+		if(ret === 2){
+			ret = 1;
+		}
+		packSend("end","gameover",ret,null,null);	
+	}
+}
+
+function endGame(ret){
+	var info;
+	if(ret == 1){
+		info = "You Win";
+	}
+	if(ret == 2){
+		info = "You Lose";
+	}
+	if(ret == 3){
+		info = "Tie";
+	}
+	turnInfo.innerHTML = "GameOver" + info;
+	enable(1);
+	clearGame();
+}
+
 
 
 function enable(ab){
@@ -85,7 +145,7 @@ cardback.onclick = function(){
 
 cardblank = new Object();
 cardblank.owner = 1;
-cardback.name = undefined
+cardblank.name = undefined
 cardblank.img = "../img/card.jpg";
 
 console.log('current');
@@ -95,6 +155,7 @@ for(var i = 0; i < cards.length; i++){
 	document.write("<script id = " + name + " src='../" + name + "/" + name + ".js'></script>");
 	//console.log(name);
 }
+document.write("<script id = " + char + " src='../" + char + "/" + char + ".js'></script>");
 
 
 //console.log(mySanDom);
@@ -108,28 +169,6 @@ var opponent = {
 	san: 40,
 	flip: 0
 };
-
-// card3001 = new Object();
-// card3001.img = "../card3001/3001.png";
-// card3001.onclick = function(){
-// 	sinChange(1, -5);
-// };
-// card3001.onmouseover = function(){
-// 	console.log(screem[0]);
-// 	screem[0].children[0].src = card3001.img;
-
-// }
-
-// card3002 = new Object();
-// card3002.img = "../card3002/3002.jpg";
-// card3002.onclick = function(){
-// 	sinChange(0, 8);
-// };
-// card3002.onmouseover = function(){
-// 	console.log(screem[0]);
-// 	screem[0].children[0].src = card3002.img;
-
-// }
 
 function findCard(pos){
 	for(var i = 0; i < board.length; i++){
@@ -164,35 +203,47 @@ function positionShift(pos){
 
 function shiftHand(pos,obj){
 	if(obj === 0){
-		if(pos < 5){
+		if(pos < 6){
 			for(var i = pos+6; i<=5+6; i++){
-				if(hand[pos+6].name === undefined){
-					return;
+				if(hand[i].name === undefined && hand[i].name === cardblank.name){
+					shiftCard(hand[i],cardblank);
+					shiftCard(hand[i-1],cardblank);
+					break;
 				}
 				else{
-					shiftCard(hand[pos+6-1],hand[pos]);
-					packSend("shiftHand",null,pos,null,1);
+					console.log(hand[i-1]);
+					console.log(hand[i]);
+					shiftCard(hand[i-1],hand[i]);
+					
 				}
 			}
 		}
+		shiftCard(hand[11],cardblank);
+		console.log('client send shifthandinggggggggg ' + pos);
+		packSend("shiftHand",null,pos,null,1);
+		console.log('client send shifthand');
 	}
 	//opponents only shift once per pack.
 	else{
-		shiftCard(hand[pos-1],hand[pos]);
+		console.log('pos ' + pos);
+		shiftCard(hand[pos-1],cardback);
+		shiftCard(hand[opHand],cardblank);
 	}
 
 }
 
 function shiftCard(card, obj){
 	//console.log(obj);
+	card.img = obj.img;
 	card.children[0].src = obj.img;
 	card.onmouseover = obj.onmouseover;
+	card.onmouseout = obj.onmouseout;
 	card.owner = obj.owner;
 	card.name = obj.name;
 	//card.enable = obj.enable;
 	//console.log("beffff")
 
-	card.playcard = obj.onclick;
+	card.playcard = obj.playcard;
 
 	card.ondblclick = function(){
 		console.log(card.enable);
@@ -218,6 +269,7 @@ function shiftCard(card, obj){
 			myHand -= 1;
 			packSend("drop",null,pos,null,1)
 			shiftHand(card.position,0);
+			checkWin();
 		}
 	}
 
@@ -286,6 +338,12 @@ function drawCard(ob, value){
 
 }
 
+function clearGame(){
+	for(var i = 0; i< board.length; i++){
+		shiftCard(board[i].card,cardblank);
+	}
+}
+
 
 
 ws.onmessage = function (e) {
@@ -294,6 +352,11 @@ ws.onmessage = function (e) {
 	if(data.type === "assignID"){
 		myid = data.info;
 		console.log("my id is " + myid);
+	}
+	if(data.type === "end"){
+		console.log("gameover");
+		endGame(data.target);
+
 	}
 	if(data.type === "draw"){
 		console.log("drawing");
@@ -311,16 +374,31 @@ ws.onmessage = function (e) {
 	if(data.type === "start"){
 		console.log("your turn start");
 		enable(0);
+		turnInfo.innerHTML = "Your Turn";
+		var cardchar = eval(char);
+		shiftCard(mySanDom,cardchar);
+
 	}
 	if(data.type === "shiftHand"){
 		console.log("hand shifting");
-		shiftHand(data.target);
+		shiftHand(data.target,1);
 	}
 	if(data.type === "action"){
 		if(data.attribute === "san"){
 			sanChange(data.target,data.value);
 		}
 	}
+}
+
+
+function showTarget(card, icon){
+	card = card.children[0].getBoundingClientRect()
+
+	icon.style.height = card.height;
+	icon.style.width = card.width;
+	icon.style.left = card.left
+	icon.style.top = card.top + document.body.scrollTop;
+	icon.style.display = "inline";
 }
 
 window.onload = function(){

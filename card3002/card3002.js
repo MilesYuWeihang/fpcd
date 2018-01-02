@@ -26,7 +26,7 @@ function helper3002(card){
 	},100);
 }
 
-card3002.onclick = function(){
+card3002.playcard = function(){
 	console.log("in3002")
 	curDOM = null;
 	turnInfo.innerHTML = "Select Target";
@@ -38,5 +38,10 @@ card3002.onclick = function(){
 card3002.onmouseover = function(){
 	console.log(screem);
 	screem.children[0].src = card3002.img;
+	showTarget(this, greenWin);
 
+}
+
+card3002.onmouseout = function(){
+	greenWin.style.display = "none";
 }
