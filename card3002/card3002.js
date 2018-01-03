@@ -2,6 +2,7 @@ card3002 = new Object();
 card3002.img = "../card3002/3002.jpg";
 card3002.name = "Holy Light";
 function helper3002(card){
+	enable(1);
 	var flag = 0;
 	setTimeout(function(){
 		if (curDOM === null){
@@ -11,16 +12,26 @@ function helper3002(card){
 			sanChange(1, 8);
 			packSend("action", null, 0, "san", 8);
 			turnInfo.innerHTML = "End Turn";
-			removeCard(card);
+			targetShow = false;
+
+			packSend("action", card.img, positionShift(card.position),"showFlip",null);
+			packSend("action",null, 11,"showTarget","positive");
+			sleep(1000).then(()=>(removeCard(card),hidIcon(1),enable(0)));
 		}
 		else if(curDOM.position === 11){
 			sanChange(0, 8);
 			packSend("action", null, 1, "san", 8);
 			turnInfo.innerHTML = "End Turn";
-			removeCard(card);
+			targetShow = false;
+
+			packSend("action", card.img, positionShift(card.position),"showFlip",null);
+			packSend("action",null, 111,"showTarget","positive");
+			sleep(1000).then(()=>(removeCard(card),hidIcon(1),enable(0)));
 		}
 		else{
 			turnInfo.innerHTML = "Invalid Target";
+			targetShow = false;
+			enable(0);
 		}
 		
 	},100);
